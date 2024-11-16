@@ -1,0 +1,15 @@
+
+.husky
+node_modules
+dist
+
+*.prettierignore
+*.editorconfig
+*.eslintignore
+*.gitignore
+*.madgerc
+*.npmrc
+*.stylelintignore
+*.gitkeep
+*.png
+*.ico
