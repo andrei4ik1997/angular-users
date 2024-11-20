@@ -2,11 +2,11 @@ module.exports = {
 	overrides: [
 		{
 			files: '*.json',
-			options: {parser: 'json'},
+			options: { parser: 'json' },
 		},
 		{
 			files: '*.html',
-			options: {parser: 'angular'},
+			options: { parser: 'angular' },
 		},
 	],
 	printWidth: 120,
@@ -14,7 +14,7 @@ module.exports = {
 	useTabs: true,
 	tabWidth: 4,
 	semi: true,
-	bracketSpacing: false,
+	bracketSpacing: true,
 	arrowParens: 'always',
 	trailingComma: 'es5',
 	endOfLine: 'auto',

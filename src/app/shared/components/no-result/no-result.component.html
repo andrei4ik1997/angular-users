@@ -1,0 +1,14 @@
+<nz-result
+	nz-flex
+	nzJustify="center"
+	nzAlign="center"
+	nzGap="middle"
+	nzStatus="error"
+	[nzVertical]="true"
+	[nzSubTitle]="subTitle()"
+	[nzTitle]="title()"
+>
+	<div nz-result-extra>
+		<button nz-button nzType="default" type="button" (click)="buttonClick()">{{ buttonText() }}</button>
+	</div>
+</nz-result>

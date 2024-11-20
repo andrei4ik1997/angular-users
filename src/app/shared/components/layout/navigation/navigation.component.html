@@ -1,0 +1,7 @@
+<ul nz-menu nzTheme="dark" nzMode="horizontal">
+	@for (item of navigationList; track item) {
+		<li nz-menu-item [nzSelected]="isRouteActive(item.routerLink)">
+			<a [routerLink]="item.routerLink">{{ item.pageName }}</a>
+		</li>
+	}
+</ul>

@@ -1,0 +1,10 @@
+@if (isError()) {
+	<app-no-result
+		subTitle="Please click button to reload page"
+		buttonText="Retry"
+		title="An unexpected error has occurred"
+		(onButtonClick)="retry()"
+	/>
+} @else {
+	<app-user-form [isEditMode]="true" [user]="user()" />
+}

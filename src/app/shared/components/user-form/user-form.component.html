@@ -1,0 +1,197 @@
+<form nz-form [formGroup]="userFormGroup">
+	<div nz-row nzJustify="space-between">
+		<div nz-col nzSpan="11">
+			<nz-divider nzOrientation="left" nzText="User Info" />
+			<nz-form-item>
+				<nz-form-label nzFlex="100px" nzFor="first-name" [nzRequired]="isEditMode() ? false : true">
+					First Name
+				</nz-form-label>
+				<nz-form-control nzFlex="1">
+					<input id="first-name" class="form-input" nz-input [formControlName]="formFields.firstName" />
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item>
+				<nz-form-label nzFlex="100px" nzFor="last-name" [nzRequired]="isEditMode() ? false : true">
+					Last Name
+				</nz-form-label>
+				<nz-form-control nzFlex="1">
+					<input id="last-name" class="form-input" nz-input [formControlName]="formFields.lastName" />
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item>
+				<nz-form-label nzFlex="100px" nzFor="username" [nzRequired]="isEditMode() ? false : true">
+					Username
+				</nz-form-label>
+				<nz-form-control
+					nzFlex="1"
+					[nzHasFeedback]="true"
+					[nzValidatingTip]="validatingTipTemplate"
+					[nzErrorTip]="usernameErrorTemplate"
+				>
+					<input id="username" class="form-input" nz-input [formControlName]="formFields.username" />
+					<ng-template #usernameErrorTemplate let-control>
+						@if (control.errors?.[validatorErrorCode.isExist]) {
+							<span>The username is redundant!</span>
+						}
+					</ng-template>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item>
+				<nz-form-label nzFlex="100px" nzFor="email">E-mail</nz-form-label>
+				<nz-form-control
+					nzFlex="1"
+					[nzHasFeedback]="true"
+					[nzErrorTip]="emailErrorTemplate"
+					[nzValidatingTip]="validatingTipTemplate"
+				>
+					<input id="email" class="form-input" nz-input type="email" [formControlName]="formFields.email" />
+					<ng-template #emailErrorTemplate let-control>
+						@if (control.errors?.[validatorErrorCode.isExist]) {
+							<span>The email is redundant!</span>
+						} @else {
+							<span>The input is not valid E-mail!</span>
+						}
+					</ng-template>
+				</nz-form-control>
+			</nz-form-item>
+
+			<form nz-form [formGroupName]="formFields.phone">
+				<nz-form-item>
+					<nz-form-label nzFlex="100px" nzFor="phoneNumber">Phone</nz-form-label>
+					<nz-form-control nzFlex="1">
+						<nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
+							<ng-template #addOnBeforeTemplate>
+								<nz-select
+									class="phone-select"
+									[formControlName]="formFields.phonePrefix"
+									[nzDropdownStyle]="{ 'min-width': '200px' }"
+									[nzCustomTemplate]="defaultTemplate"
+								>
+									@for (prefix of phonePrefixes; track prefix[0]) {
+										<nz-option [nzValue]="prefix[1]" [nzLabel]="prefix[1] + ' ' + prefix[0]" />
+									}
+									<ng-template #defaultTemplate let-selected>
+										{{ selected.nzValue }}
+									</ng-template>
+								</nz-select>
+							</ng-template>
+							<input
+								id="phoneNumber"
+								class="form-input"
+								nz-input
+								type="tel"
+								[formControlName]="formFields.phoneNumber"
+							/>
+						</nz-input-group>
+					</nz-form-control>
+				</nz-form-item>
+			</form>
+			<nz-form-item>
+				<nz-form-label nzFlex="100px" nzFor="website">Website</nz-form-label>
+				<nz-form-control nzFlex="1">
+					<input id="website" class="form-input" nz-input type="url" [formControlName]="formFields.website" />
+				</nz-form-control>
+			</nz-form-item>
+		</div>
+
+		<div nz-col nzSpan="11">
+			<form nz-form [formGroupName]="formFields.address">
+				<nz-divider nzOrientation="left" nzText="Address" />
+
+				<nz-form-item>
+					<nz-form-label nzFlex="100px" nzFor="city">City</nz-form-label>
+					<nz-form-control nzFlex="1">
+						<input id="city" class="form-input" nz-input [formControlName]="formFields.city" />
+					</nz-form-control>
+				</nz-form-item>
+
+				<nz-form-item>
+					<nz-form-label nzFlex="100px" nzFor="street">Street</nz-form-label>
+					<nz-form-control nzFlex="1">
+						<input id="street" class="form-input" nz-input [formControlName]="formFields.street" />
+					</nz-form-control>
+				</nz-form-item>
+
+				<nz-form-item>
+					<nz-form-label nzFlex="100px" nzFor="suite">Suite</nz-form-label>
+					<nz-form-control nzFlex="1">
+						<input id="suite" class="form-input" nz-input [formControlName]="formFields.suite" />
+					</nz-form-control>
+				</nz-form-item>
+
+				<nz-form-item>
+					<nz-form-label nzFlex="100px" nzFor="zipcode">Zip code</nz-form-label>
+					<nz-form-control nzFlex="1">
+						<input id="zipcode" class="form-input" nz-input [formControlName]="formFields.zipcode" />
+					</nz-form-control>
+				</nz-form-item>
+			</form>
+
+			<form nz-form [formGroupName]="formFields.company">
+				<nz-divider nzOrientation="left" nzText="Company" />
+
+				<nz-form-item>
+					<nz-form-label nzFlex="100px" nzFor="companyName">Name</nz-form-label>
+					<nz-form-control nzFlex="1">
+						<input
+							id="companyName"
+							class="form-input"
+							nz-input
+							[formControlName]="formFields.companyName"
+						/>
+					</nz-form-control>
+				</nz-form-item>
+
+				<nz-form-item>
+					<nz-form-label nzFlex="100px" nzFor="companyBs">Bs</nz-form-label>
+					<nz-form-control nzFlex="1">
+						<input id="companyBs" class="form-input" nz-input [formControlName]="formFields.companyBs" />
+					</nz-form-control>
+				</nz-form-item>
+
+				<nz-form-item>
+					<nz-form-label nzFlex="100px" nzFor="companyCatchPhrase">Catch Phrase</nz-form-label>
+					<nz-form-control nzFlex="1">
+						<input
+							id="companyCatchPhrase"
+							class="form-input"
+							nz-input
+							[formControlName]="formFields.companyCatchPhrase"
+						/>
+					</nz-form-control>
+				</nz-form-item>
+			</form>
+		</div>
+	</div>
+
+	<div nz-flex nzGap="middle">
+		<button
+			nz-button
+			nzType="primary"
+			type="button"
+			[style.flex]="1"
+			[disabled]="userFormGroup.pristine || userFormGroup.invalid || userFormGroup.pending || loading()"
+			(click)="confirm()"
+		>
+			{{ isEditMode() ? 'Edit user' : 'Add user' }}
+		</button>
+
+		<button
+			nz-button
+			nzType="default"
+			type="button"
+			[style.flex]="1"
+			[disabled]="userFormGroup.pristine || loading()"
+			(click)="resetForm()"
+		>
+			Reset
+		</button>
+	</div>
+</form>
+
+<ng-template #validatingTipTemplate>
+	<span>Validating...</span>
+</ng-template>

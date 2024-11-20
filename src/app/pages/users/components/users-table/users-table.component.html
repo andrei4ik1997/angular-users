@@ -1,0 +1,170 @@
+<div nz-flex nzGap="middle" [nzVertical]="true">
+	<div class="actions" nz-flex nzJustify="space-between">
+		<div>
+			<button
+				nz-button
+				nzType="primary"
+				nzShape="circle"
+				nz-tooltip
+				nzTooltipTitle="Synchronize actual users"
+				type="button"
+				[disabled]="loading()"
+				(click)="retry()"
+			>
+				<span nz-icon nzType="sync" nzTheme="outline"></span>
+			</button>
+		</div>
+
+		<div nz-flex nzGap="middle">
+			<button
+				nz-button
+				nzType="primary"
+				type="button"
+				[disabled]="selectedTableFilters().size === 0"
+				(click)="clearFilters()"
+			>
+				<span nz-icon nzType="clear" nzTheme="outline"></span>
+				Clear filters
+			</button>
+			<button nz-button nzType="primary" type="button" (click)="addUser()">
+				<span nz-icon nzType="user-add" nzTheme="outline"></span>
+				Add user
+			</button>
+		</div>
+	</div>
+
+	<nz-table
+		#filterTable
+		nzTableLayout="fixed"
+		[nzData]="tableData()"
+		[nzLoading]="loading()"
+		[nzNoResult]="noResultRef"
+		[nzShowSizeChanger]="true"
+		[nzShowPagination]="true"
+		[nzPageSize]="5"
+		[nzPageSizeOptions]="[5, 10, 15, 20, 25, 30]"
+	>
+		<thead>
+			<tr>
+				@for (column of tableColumnsConfig(); track column.name) {
+					@if (column.isCustomFilter) {
+						<th
+							nzCustomFilter
+							[nzAlign]="column.cellAlign ?? null"
+							[nzWidth]="column.width ?? null"
+							[nzShowSort]="column.showSort ?? false"
+							[nzSortOrder]="column.sortOrder ?? null"
+							[nzSortDirections]="column.sortDirections ?? []"
+							[nzSortPriority]="column.sortPriority ?? false"
+							[nzSortFn]="column.sortFn ?? null"
+						>
+							{{ column.name }}
+							<nz-filter-trigger
+								[nzVisible]="isVisibleSearchUserMenu()"
+								[nzActive]="isVisibleSearchUserMenu() || searchFormControl.value.length > 0"
+								[nzDropdownMenu]="searchUserMenu"
+								(nzVisibleChange)="changeVisibilitySearchUserMenu($event)"
+							>
+								<span nz-icon nzType="search"></span>
+							</nz-filter-trigger>
+						</th>
+					} @else {
+						<th
+							[nzAlign]="column.cellAlign ?? null"
+							[nzWidth]="column.width ?? null"
+							[nzShowSort]="column.showSort ?? false"
+							[nzSortOrder]="column.sortOrder ?? null"
+							[nzSortDirections]="column.sortDirections ?? [null, 'ascend', 'descend']"
+							[nzSortPriority]="column.sortPriority ?? false"
+							[nzSortFn]="column.sortFn ?? null"
+							[nzShowFilter]="(column.listOfFilter ?? []).length > 0"
+							[nzFilters]="column.listOfFilter ?? []"
+							[nzFilterMultiple]="column.filterMultiple ?? false"
+							[nzFilterFn]="column.filterFn ?? null"
+							(nzFilterChange)="filterChanged(column.name, $event)"
+						>
+							{{ column.name }}
+						</th>
+					}
+				}
+			</tr>
+		</thead>
+		<tbody>
+			@for (userData of filterTable.data; track userData.name) {
+				<tr>
+					@for (column of tableColumnsConfig(); track column.name) {
+						<td [nzAlign]="column.cellAlign ?? null">
+							@let type = column.type ?? 'text';
+							@switch (type) {
+								@case ('text') {
+									@if (column.dataProperty) {
+										<span>
+											@if (column.additionalDataProperty) {
+												{{ $any(userData[column.dataProperty])[column.additionalDataProperty] }}
+											} @else {
+												{{ userData[column.dataProperty] }}
+											}
+										</span>
+									}
+								}
+								@case ('button') {
+									<button
+										nz-button
+										nzType="primary"
+										type="button"
+										(click)="test($event, column, userData)"
+									>
+										@if (column.icon) {
+											<span nz-icon nzTheme="outline" [nzType]="column.icon"></span>
+										}
+
+										{{ column.text ?? 'Button' }}
+									</button>
+								}
+							}
+						</td>
+					}
+				</tr>
+			}
+		</tbody>
+	</nz-table>
+</div>
+
+<ng-template #noResultRef>
+	<app-no-result
+		subTitle="Please click button to reload page"
+		buttonText="Retry"
+		title="An unexpected error has occurred"
+		(onButtonClick)="retry()"
+	/>
+</ng-template>
+
+<nz-dropdown-menu #searchUserMenu="nzDropdownMenu">
+	<div class="ant-table-filter-dropdown">
+		<div class="ant-dropdown-menu">
+			<input nz-input nzSize="default" placeholder="" type="text" [formControl]="searchFormControl" />
+		</div>
+		<div class="ant-table-filter-dropdown-btns">
+			<button
+				nz-button
+				nzSize="small"
+				nzType="link"
+				type="button"
+				[disabled]="searchFormControl.value.length === 0"
+				(click)="resetSearchUsername()"
+			>
+				Reset
+			</button>
+			<button
+				nz-button
+				nzSize="small"
+				nzType="primary"
+				type="button"
+				[disabled]="searchFormControl.invalid"
+				(click)="searchByUsername()"
+			>
+				Search
+			</button>
+		</div>
+	</div>
+</nz-dropdown-menu>

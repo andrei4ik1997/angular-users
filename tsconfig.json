@@ -17,7 +17,18 @@
 		"importHelpers": true,
 		"target": "ES2022",
 		"module": "ES2022",
-		"lib": ["ES2022", "dom"]
+		"lib": ["ES2022", "dom"],
+		"paths": {
+			"@pages/*": ["./src/app/pages/*"],
+			"@shared-components": ["./src/app/shared/components/index.ts"],
+			"@shared-constants": ["./src/app/shared/constants/index.ts"],
+			"@shared-helpers": ["./src/app/shared/helpers/index.ts"],
+			"@shared-interceptors": ["./src/app/shared/interceptors/index.ts"],
+			"@shared-models": ["./src/app/shared/models/index.ts"],
+			"@shared-services": ["./src/app/shared/services/index.ts"],
+			"@shared-types": ["./src/app/shared/types/index.ts"],
+			"@shared-validators": ["./src/app/shared/validators/index.ts"]
+		}
 	},
 	"angularCompilerOptions": {
 		"enableI18nLegacyMessageIdFormat": false,

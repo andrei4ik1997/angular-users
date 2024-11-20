@@ -1,16 +1,15 @@
-import {provideHttpClient} from '@angular/common/http';
-import {ApplicationConfig, inject, isDevMode, provideExperimentalZonelessChangeDetection} from '@angular/core';
-import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
-import {
-	IsActiveMatchOptions,
-	provideRouter,
-	Router,
-	ViewTransitionsFeatureOptions,
-	withComponentInputBinding,
-	withViewTransitions,
-} from '@angular/router';
-import {provideServiceWorker} from '@angular/service-worker';
-import {APP_ROUTES} from './app.routes';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import type { ApplicationConfig } from '@angular/core';
+import { inject, isDevMode, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import type { IsActiveMatchOptions, ViewTransitionsFeatureOptions } from '@angular/router';
+import { provideRouter, Router, withComponentInputBinding, withViewTransitions } from '@angular/router';
+import { provideServiceWorker } from '@angular/service-worker';
+import { apiUrlInterceptor, errorInterceptor, loaderInterceptor } from '@shared-interceptors';
+import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
+
+import { SERVICES } from './app.initializers';
+import { APP_ROUTES } from './app.routes';
 
 const viewTransitionConfig: ViewTransitionsFeatureOptions = {
 	onViewTransitionCreated: (transitionInfo) => {
@@ -36,10 +35,12 @@ export const appConfig: ApplicationConfig = {
 		provideExperimentalZonelessChangeDetection(),
 		provideRouter(APP_ROUTES, withComponentInputBinding(), withViewTransitions(viewTransitionConfig)),
 		provideAnimationsAsync(),
-		provideHttpClient(),
+		provideHttpClient(withInterceptors([apiUrlInterceptor, loaderInterceptor, errorInterceptor])),
 		provideServiceWorker('ngsw-worker.js', {
 			enabled: !isDevMode(),
 			registrationStrategy: 'registerWhenStable:30000',
 		}),
+		provideNzI18n(en_US),
+		...SERVICES,
 	],
 };

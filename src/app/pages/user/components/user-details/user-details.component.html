@@ -1,0 +1,78 @@
+@if (isError()) {
+	<app-no-result
+		subTitle="Please click button to reload page"
+		buttonText="Retry"
+		title="An unexpected error has occurred"
+		(onButtonClick)="retry()"
+	/>
+} @else {
+	<nz-skeleton [nzActive]="true" [nzLoading]="loading()" [nzAvatar]="{ size: 'large' }">
+		<nz-card
+			nz-flex
+			nzGap="small"
+			[nzVertical]="true"
+			[nzLoading]="loading()"
+			[nzActions]="[actionEdit, actionDelete]"
+		>
+			@if (user(); as user) {
+				<nz-card-meta [nzTitle]="user.name" />
+				<nz-divider nzType="horizontal" />
+				<div nz-flex nzGap="small" [nzVertical]="true">
+					<div nz-flex nzGap="small">
+						<span>Username:</span>
+						<span>{{ user.username }}</span>
+					</div>
+					<div nz-flex nzGap="small">
+						<span>Company:</span>
+						<span>{{ user.company.name }}</span>
+					</div>
+					<div nz-flex nzGap="small">
+						<span>Website:</span>
+						<a target="_blank" [href]="'http://' + user.website">{{ user.website }}</a>
+					</div>
+					<div nz-flex nzGap="small">
+						<span>Phone:</span>
+						<a [href]="'tel:' + user.phone">{{ user.phone }}</a>
+					</div>
+					<div nz-flex nzGap="small">
+						<span>Email:</span>
+						<a [href]="'mailto:' + user.email">{{ user.email }}</a>
+					</div>
+					<div nz-flex nzGap="small">
+						@let address = user.address;
+						<span>Address:</span>
+						<address>
+							<a target="_blank" [href]="address | googleMapLink">{{ address | address }}</a>
+						</address>
+					</div>
+				</div>
+			}
+		</nz-card>
+	</nz-skeleton>
+}
+
+<ng-template #actionEdit>
+	<button nz-button nzType="default" type="button" (click)="editUser()">
+		<span nz-icon nzType="edit" nzTheme="outline"></span>
+		Edit user
+	</button>
+</ng-template>
+<ng-template #actionDelete>
+	<button
+		nz-button
+		nzDanger
+		nz-popconfirm
+		nzType="default"
+		nzPopconfirmPlacement="bottomRight"
+		nzOkText="Delete"
+		type="button"
+		[disabled]="loading()"
+		[nzOkDanger]="true"
+		[nzPopconfirmBackdrop]="true"
+		[nzPopconfirmTitle]="deleteUserPopupMessage"
+		(nzOnConfirm)="deleteUser()"
+	>
+		<span nz-icon nzType="delete" nzTheme="outline"></span>
+		Delete user
+	</button>
+</ng-template>
