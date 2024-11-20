@@ -8,7 +8,7 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { apiUrlInterceptor, errorInterceptor, loaderInterceptor } from '@shared-interceptors';
 import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 
-import { SERVICES } from './app.initializers';
+import { ENVIRONMENT_INITIALIZERS, SERVICES } from './app.initializers';
 import { APP_ROUTES } from './app.routes';
 
 const viewTransitionConfig: ViewTransitionsFeatureOptions = {
@@ -42,5 +42,6 @@ export const appConfig: ApplicationConfig = {
 		}),
 		provideNzI18n(en_US),
 		...SERVICES,
+		...ENVIRONMENT_INITIALIZERS,
 	],
 };

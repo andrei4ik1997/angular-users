@@ -35,7 +35,13 @@
 								"output": "/assets/"
 							}
 						],
-						"styles": ["src/styles.scss"],
+						"styles": [
+							{
+								"input": "src/styles.scss",
+								"bundleName": "styles",
+								"inject": false
+							}
+						],
 						"scripts": []
 					},
 					"configurations": {
