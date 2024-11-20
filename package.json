@@ -14,6 +14,7 @@
 		"stylelint": "stylelint '**/*.{css,scss}'",
 		"stylelint-fix": "stylelint '**/*.{css,scss}' --fix",
 		"find-circular-dependencies": "npx madge -c --extensions ts ./",
+		"deploy": "ng build --base-href https://andrei4ik1997.github.io/angular-users/ && ngh --dir dist/angular-users/browser",
 		"prepare": "husky"
 	},
 	"private": true,

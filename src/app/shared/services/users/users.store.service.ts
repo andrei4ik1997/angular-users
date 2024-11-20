@@ -66,9 +66,9 @@ export class UsersStoreService {
 				const isError = isHttpErrorResponse(response);
 
 				if (!isError) {
-					const users = this.usersSignal();
+					const copyUsers = structuredClone(this.usersSignal());
 
-					const modifiedIndex = users.findIndex((user) => {
+					const modifiedIndex = copyUsers.findIndex((user) => {
 						return user.id === id;
 					});
 
@@ -76,11 +76,11 @@ export class UsersStoreService {
 						return;
 					}
 
-					const user = structuredClone(users[modifiedIndex]);
+					const user = copyUsers[modifiedIndex];
 
-					users[modifiedIndex] = { ...user, ...response };
+					copyUsers[modifiedIndex] = { ...user, ...response };
 
-					this.usersSignal.set(users);
+					this.usersSignal.set(copyUsers);
 				}
 			})
 		);
