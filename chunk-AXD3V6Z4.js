@@ -1,0 +1,1 @@
+var s={users:"users"};var o={users:"users",user:"user",add:"add",edit:"edit",userId:"userID",notFound:"notFound"},r={users:"Users",user:"User",userAdd:"Add new user",notFound:"Not Found"},t="userData";var u={empty:"empty"};export{s as a,o as b,r as c,t as d,u as e};
